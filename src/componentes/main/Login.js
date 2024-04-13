@@ -176,7 +176,7 @@ function Login() {
               )}
             </InputContainer>
 
-            {/* Enlace para recuperar contraseña */}
+            {/* Enlace para recuperar contraseña  NO FUNCIONA AUN*/}
             <ForgotPasswordLink to="/forgot-password">¿Olvidaste Usuario y/o Contraseña?</ForgotPasswordLink>
           
             <Button type="submit">Iniciar Sesión</Button>
