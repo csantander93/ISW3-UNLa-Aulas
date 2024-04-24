@@ -23,6 +23,7 @@ function Home () {
 
   const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  console.log(subjects);
 
   const handleYearSelection = async (index) => {
     setIsLoading(true); // Activamos el cartel de carga al iniciar la petición

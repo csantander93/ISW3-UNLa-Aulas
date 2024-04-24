@@ -19,8 +19,6 @@ const Td = styled.td`
 `;
 
 const SubjectsTable = ({ subjects }) => {
-
-  console.log(subjects);
   
   return (
     <Table>
@@ -40,6 +38,10 @@ const SubjectsTable = ({ subjects }) => {
           <tr key={index}>
             <Td>{subject.nombre}</Td>
             <Td>{subject.turno}</Td>
+            <Td>{subject.cantidadEstudiantes}</Td>
+            <Td>{subject.docenteACargo}</Td>
+            <Td>{subject.aulaAsignada}</Td>
+            <Td>{subject.edificio}</Td>
           </tr>
         ))}
       </tbody>
