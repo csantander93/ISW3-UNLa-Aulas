@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import AssignOrUnassign from "../actions/AssignOrUnassign";
 
 const Table = styled.table`
   width: 83%; /* Ajustar el ancho de la tabla según tus necesidades */
@@ -40,8 +41,9 @@ const SubjectsTable = ({ subjects }) => {
             <Td>{subject.turno}</Td>
             <Td>{subject.cantidadEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
-            <Td>{subject.aulaAsignada}</Td>
+            <Td>{subject.aulaAsignada == 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
             <Td>{subject.edificio}</Td>
+            <Td><AssignOrUnassign aulaAsignada={subject.aulaAsignada}/></Td>
           </tr>
         ))}
       </tbody>
