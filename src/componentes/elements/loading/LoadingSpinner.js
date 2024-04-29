@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import useCommon  from '../../contexts/CommonContext/useCommon';
 
 // Estilizando el cartel de carga
 const SpinnerOverlay = styled.div`
@@ -12,7 +13,7 @@ const SpinnerOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Asegura que esté sobre otros elementos */
+  z-index: 10; /* Asegura que esté sobre otros elementos */
 `;
 
 const Spinner = styled.div`
@@ -30,10 +31,12 @@ const Spinner = styled.div`
 `;
 
 const LoadingSpinner = ({ isLoading }) => {
+  const { loadingScreen } = useCommon();
   // Si isLoading es true, mostramos el cartel de carga, de lo contrario, no mostramos nada
+  useEffect(() => { }, [loadingScreen]);
   return (
     <>
-      {isLoading && (
+      {loadingScreen && (
         <SpinnerOverlay>
           <Spinner />
         </SpinnerOverlay>

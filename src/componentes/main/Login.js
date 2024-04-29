@@ -1,8 +1,8 @@
-import styled from "styled-components";
 import React, { useState } from 'react';
+import { FaLock, FaRegEye, FaRegEyeSlash, FaRegUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FaRegUser, FaLock, FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import axios from "axios";
+import styled from "styled-components";
+import { useUsers } from "../contexts/UserContext/useUsers";
 import GlobalStyles from "./GlobalStyles";
 import PrincipalBox from "./PrincipalBox";
 
@@ -83,7 +83,7 @@ const IconViewPass = styled(FaRegEyeSlash)`
 `;
 
 const P = styled.p`
-  font-size: 20px;
+  font-size: 1.6rem;
   text-align: center;
 `;
 
@@ -99,7 +99,7 @@ const ForgotPasswordLink = styled(Link)`
 `;
 
 function Login() {
-  
+
   const [formData, setFormData] = useState({
     usuario: '',
     password: '',
@@ -107,31 +107,21 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [ user, setUser ] = useState(null);
+  const { login } = useUsers();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
-        ...prevState,
-        [name]: value
+      ...prevState,
+      [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/login", formData)
-        .then(response => {
-            console.log('¡Datos enviados con éxito!', response.data);
-            setUser(response.data)
-            window.localStorage.setItem('token', response.data.token);
-            // Guarda los datos del usuario en localStorage
-            window.localStorage.setItem("user", JSON.stringify(response.data));
-            navigate('/home');
-        })
-        .catch(error => {
-            console.error('Error al enviar los datos:', error);
-            alert("usuario/contraseña incorrecta")
-        });
+
+    const response = await login(formData);
+    response && navigate("/home");
   };
 
   const handleTogglePasswordVisibility = () => {
@@ -140,13 +130,13 @@ function Login() {
 
   return (
     <>
-    <GlobalStyles/>
-    <PrincipalBox>
+      <GlobalStyles />
+      <PrincipalBox>
         <FormDiv>
           <form onSubmit={handleSubmit}>
             <Title>Bienvenido a UNLa Aulas!</Title>
             <P>Ingresa tus datos para continuar</P>
-            
+
             <Label>Usuario</Label>
             <InputContainer>
               <IconUser />
@@ -155,10 +145,10 @@ function Login() {
                 name="usuario"
                 placeholder=" usuario"
                 value={formData.usuario}
-                onChange={handleChange} 
+                onChange={handleChange}
               />
             </InputContainer>
-            
+
             <Label>Contraseña</Label>
             <InputContainer>
               <IconPassword />
@@ -178,15 +168,15 @@ function Login() {
 
             {/* Enlace para recuperar contraseña  NO FUNCIONA AUN*/}
             <ForgotPasswordLink to="/forgot-password">¿Olvidaste Usuario y/o Contraseña?</ForgotPasswordLink>
-          
+
             <Button type="submit">Iniciar Sesión</Button>
 
             <Link to="/register">
-            <Button>Crear Cuenta</Button>
-          </Link>
+              <Button>Crear Cuenta</Button>
+            </Link>
           </form>
         </FormDiv>
-        </PrincipalBox>
+      </PrincipalBox>
     </>
   );
 }

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 const Table = styled.table`
-  width: 83%; /* Ajustar el ancho de la tabla según tus necesidades */
-  margin-left: 300px; /* Centrar la tabla horizontalmente */
+  width: 100%; /* Ajustar el ancho de la tabla según tus necesidades */
   border-collapse: collapse;
 `;
 
@@ -19,7 +18,7 @@ const Td = styled.td`
 `;
 
 const SubjectsTable = ({ subjects }) => {
-  
+
   return (
     <Table>
       <thead>
