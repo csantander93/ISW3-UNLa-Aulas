@@ -1,10 +1,10 @@
-import styled from "styled-components";
 import React, { useState } from 'react';
-import axios from "axios";
-import { Link } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'; // Importa los íconos
-import PrincipalBox from "./PrincipalBox";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { useUsers } from "../contexts/UserContext/useUsers";
 import GlobalStyles from "./GlobalStyles";
+import PrincipalBox from "./PrincipalBox";
 
 const IconViewPass = styled(FaRegEyeSlash)`
   position: absolute;
@@ -62,26 +62,21 @@ const InputContainer = styled.div`
   position: relative;
 `;
 
-const SuccessMessage = styled.div`
-  color: green;
-  text-align: center;
-`;
-
 const FormDiv = styled.div`
   padding: 40px;
 `;
 
+const DEFAULT_FORM = { // Limpiar el formulario
+  usuario: '',
+  password: '',
+  nombre: '',
+  apellido: '',
+  email: '',
+}
 function Register() {
-  const [formData, setFormData] = useState({
-    usuario: '',
-    password: '',
-    nombre: '',
-    apellido: '',
-    email: '',
-  });
-
+  const { signUp } = useUsers();
+  const [formData, setFormData] = useState(DEFAULT_FORM);
   const [enviandoPeticion, setEnviandoPeticion] = useState(false);
-  const [registroExitoso, setRegistroExitoso] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePasswordVisibility = () => {
@@ -91,100 +86,82 @@ function Register() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
-        ...prevState,
-        [name]: value
+      ...prevState,
+      [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setEnviandoPeticion(true);
-
-    axios.post("http://localhost:8080/usuario/registro", formData)
-        .then(response => {
-            console.log('¡Datos enviados con éxito!', response.data);
-            setRegistroExitoso(true); // Mostrar mensaje de éxito
-            setFormData({ // Limpiar el formulario
-              usuario: '',
-              password: '',
-              nombre: '',
-              apellido: '',
-              email: '',
-            });
-        })
-        .catch(error => {
-            console.error('Error al enviar los datos:', error);
-        })
-        .finally(() => {
-            setEnviandoPeticion(false);
-        });
+    const response = await signUp(formData);
+    response && setFormData(DEFAULT_FORM);
   };
 
   return (
     <>
       <PrincipalBox>
-        <GlobalStyles/>
+        <GlobalStyles />
         <FormDiv>
-            <form onSubmit={handleSubmit}>
-              <Title>Crear Cuenta</Title>
+          <form onSubmit={handleSubmit}>
+            <Title>Crear Cuenta</Title>
 
-              <Label>Usuario</Label>
+            <Label>Usuario</Label>
+            <Input
+              type="text"
+              name="usuario"
+              placeholder="usuario"
+              value={formData.usuario}
+              onChange={handleChange}
+            />
+
+            <Label>Contraseña</Label>
+            <InputContainer>
               <Input
-                type="text"
-                name="usuario"
-                placeholder="usuario"
-                value={formData.usuario}
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="contraseña"
+                value={formData.password}
                 onChange={handleChange}
               />
+              {showPassword ? (
+                <IconViewPass onClick={handleTogglePasswordVisibility} as={FaRegEye} />
+              ) : (
+                <IconViewPass onClick={handleTogglePasswordVisibility} />
+              )}
+            </InputContainer>
+            <Label>Nombre</Label>
+            <Input
+              type="text"
+              name="nombre"
+              placeholder="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+            />
 
-              <Label>Contraseña</Label>
-              <InputContainer>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="contraseña"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                {showPassword ? (
-                  <IconViewPass onClick={handleTogglePasswordVisibility} as={FaRegEye} />
-                ) : (
-                  <IconViewPass onClick={handleTogglePasswordVisibility} />
-                )}
-              </InputContainer>
-              <Label>Nombre</Label>
-              <Input
-                type="text"
-                name="nombre"
-                placeholder="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-              />
+            <Label>Apellido</Label>
+            <Input
+              type="text"
+              name="apellido"
+              placeholder="apellido"
+              value={formData.apellido}
+              onChange={handleChange}
+            />
 
-              <Label>Apellido</Label>
-              <Input
-                type="text"
-                name="apellido"
-                placeholder="apellido"
-                value={formData.apellido}
-                onChange={handleChange}
-              />
+            <Label>Email</Label>
+            <Input
+              type="email"
+              name="email"
+              placeholder="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
 
-              <Label>Email</Label>
-              <Input
-                type="email"
-                name="email"
-                placeholder="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-
-              <Button type="submit" disabled={enviandoPeticion}>Enviar</Button>
-              {registroExitoso && <SuccessMessage>¡Registrado correctamente!</SuccessMessage>}
-              <Link to="/login">
+            <Button type="submit" disabled={enviandoPeticion}>Enviar</Button>
+            <Link to="/login">
               <Button>Volver</Button>
             </Link>
-            </form>
+          </form>
         </FormDiv>
       </PrincipalBox>
     </>
