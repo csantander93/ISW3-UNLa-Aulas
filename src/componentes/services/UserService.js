@@ -3,13 +3,12 @@ import api from "./server";
 
 
 export default class UserService {
-    static loginController = "/login";
     static usersController = "/usuario";
     static studentsController = "/estudiante";
     static professorsController = "/docente";
 
     static login(formData) {
-        return api.post(`${this.loginController}`, formData);
+        return api.post(`${this.usersController}/login`, formData);
     }
 
     static signUp(formData) {
