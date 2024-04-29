@@ -4,6 +4,7 @@ import SubjectsTable from "./SubjectsTable";
 import React, { useState } from "react";
 import axios from "axios";
 import Loading from "../loading/Loading";
+import LoadingSpinner from "../loading/Loading";
 
 const Header = styled.header `
 position: fixed;
@@ -23,12 +24,14 @@ function Home () {
 
   const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [anio, setAnio] = useState(0);
   console.log(subjects);
 
   const handleYearSelection = async (index) => {
     setIsLoading(true); // Activamos el cartel de carga al iniciar la petición
     try {
       const response = await axios.get(`http://localhost:8080/materia/traerMateriasPorAnio/${index + 1}`); // Ajustar la URL para enviar el año seleccionado
+      setAnio(index + 1);
       setSubjects(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -41,8 +44,8 @@ function Home () {
     <Header>
       <SubjectsYear onSelectYear={ handleYearSelection }> </SubjectsYear>
     </Header>
-    {subjects.length > 0 && <SubjectsTable subjects={subjects} />} {/* Mostrar la tabla solo si hay materias seleccionadas */}
-    <Loading isLoading={isLoading}></Loading>
+    {subjects.length > 0 && <SubjectsTable subjects={subjects} recargarTabla={handleYearSelection} anio={anio - 1}/>} {/* Mostrar la tabla solo si hay materias seleccionadas */}
+    <LoadingSpinner isLoading={isLoading}></LoadingSpinner>
     </>
   )
 }

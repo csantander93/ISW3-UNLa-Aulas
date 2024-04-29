@@ -19,7 +19,7 @@ const Td = styled.td`
   text-align: center;
 `;
 
-const SubjectsTable = ({ subjects }) => {
+const SubjectsTable = ({ subjects, recargarTabla, anio }) => {
   
   return (
     <Table>
@@ -43,7 +43,13 @@ const SubjectsTable = ({ subjects }) => {
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada == 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
             <Td>{subject.edificio}</Td>
-            <Td><AssignOrUnassign aulaAsignada={subject.aulaAsignada}/></Td>
+            <Td><AssignOrUnassign 
+              aulaAsignada={subject.aulaAsignada}
+              idAulaAsignada={subject.idAulaAsignada}
+              nombreMateria={subject.nombre}
+              recargarTabla={recargarTabla}
+              anio={anio}/>
+            </Td>
           </tr>
         ))}
       </tbody>
