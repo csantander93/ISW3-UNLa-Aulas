@@ -1,0 +1,40 @@
+.dropdown{
+    background-color: rgb(223, 223, 223);
+    border-radius: var(--border-radius);
+    padding: 5px 20px;
+    width: 100px;
+    position: relative;
+    cursor: pointer;
+   
+}
+.dropdown > div:nth-child(1){
+    
+}
+.dropdown > div:nth-child(1) > span{
+    display: block;
+    width: 100%;
+}
+.dropdown > div:nth-child(1) > img {
+    transform: rotate(-90deg);
+    width: 30px;
+}
+.dropdown > div:nth-child(2) {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    top: 40px;
+    left: 0;
+    z-index: 1;
+    height: 0%;
+    overflow: hidden;
+    transition: var(--transition-time);
+}
+.dropdown > div:nth-child(2) > button{
+    padding: 5px;
+    border-radius: 0px;
+}
+
+.dropdown:hover > div:nth-child(2){
+    height: 100%;
+    overflow: visible;
+}

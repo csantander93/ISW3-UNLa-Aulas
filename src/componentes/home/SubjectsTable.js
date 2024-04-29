@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import AssignOrUnassign from "../actions/AssignOrUnassign";
+import AssignOrUnassign from "../elements/actions/AssignOrUnassign";
 
 const Table = styled.table`
-  width: 83%; /* Ajustar el ancho de la tabla según tus necesidades */
-  margin-left: 300px; /* Centrar la tabla horizontalmente */
+  width: 100%; /* Ajustar el ancho de la tabla según tus necesidades */
   border-collapse: collapse;
 `;
 
@@ -19,8 +18,8 @@ const Td = styled.td`
   text-align: center;
 `;
 
-const SubjectsTable = ({ subjects, recargarTabla, anio }) => {
-  
+const SubjectsTable = ({ subjects }) => {
+
   return (
     <Table>
       <thead>
@@ -41,14 +40,14 @@ const SubjectsTable = ({ subjects, recargarTabla, anio }) => {
             <Td>{subject.turno}</Td>
             <Td>{subject.cantidadEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
-            <Td>{subject.aulaAsignada == 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
+            <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
             <Td>{subject.edificio}</Td>
-            <Td><AssignOrUnassign 
+            <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
               nombreMateria={subject.nombre}
               recargarTabla={recargarTabla}
-              anio={anio}/>
+              anio={anio} />
             </Td>
           </tr>
         ))}

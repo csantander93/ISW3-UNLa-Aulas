@@ -1,8 +1,5 @@
-import axios from 'axios';
+import api from "./client";
 
-const api = axios.create({
-  baseURL: 'http://localhost:8080',
-});
 
 // Agrega un interceptor de solicitudes
 api.interceptors.request.use(
