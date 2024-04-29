@@ -11,7 +11,7 @@ function App() {
     <UserProvider>
     <Router>
       <Routes>
-      <Route path='*' element={<Navigate to='/login' replace />} />
+      <Route path='*' element={<Navigate to='/home' replace />} />
         
         <Route path="/login" element={<Body><Login /></Body>} />
        
