@@ -1,10 +1,7 @@
 import React from "react";
-import { MdAddTask } from "react-icons/md";
 import { IoMdRemoveCircle } from "react-icons/io";
+import { MdAddTask } from "react-icons/md";
 import styled from "styled-components";
-import axios from "axios";
-import LoadingSpinner from "../loading/Loading";
-import { useState } from "react";
 import { useSubjects } from "../../contexts/SubjectContext/useSubjects";
 
 const Assign = styled(MdAddTask)`

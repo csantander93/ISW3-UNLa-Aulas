@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { default as React, default as React, useState } from "react";
 import styled from "styled-components";
 import { useSubjects } from "../contexts/SubjectContext/useSubjects";
 import { useFetchData } from "../hooks/useFetchData";
 import SubjectsTable from "./SubjectsTable";
-<<<<<<< HEAD
-import React, { useState } from "react";
-import axios from "axios";
-import Loading from "../loading/Loading";
-import LoadingSpinner from "../loading/Loading";
-=======
-import SubjectsYear from "./SubjectsYear";
-import './Home.css'
-import TableToolbar from "../elements/table_toolbar/TableToolbar";
->>>>>>> 2b7264909338551eabc12714c4876274db1cfddf
 
 const Header = styled.header`
 height:100%;
