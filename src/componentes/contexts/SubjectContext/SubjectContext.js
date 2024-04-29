@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import SubjectService from '../../services/SubjectService';
 import { SubjectReducer } from './SubjectReducer';
 import useCommon from '../CommonContext/useCommon';
+import ClassRoomService from '../../services/ClassRoomService';
 
 export const SubjectContext = createContext();
 
@@ -39,6 +40,19 @@ export const SubjectProvider = ({ children }) => {
         return filteredSubject;
     }
 
+    const assignSubjectToClassRoom = async (idAulaAsignada, nombreMateria) => {
+        setLoadingScreen(true);
+        try {
+            const response = await ClassRoomService.assignSubjectToClassRoom(idAulaAsignada, nombreMateria);
+            updateSubjectFromContext(response.data);
+            setScreenMessage({ message: "Materia: " + nombreMateria + ", asignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200 });
+        } catch (error) {
+            setScreenMessage({ message: "Error al asignar materia a aula", status: 400 });
+            console.error("Error al asignar materia a aula:", error);
+        }
+        setLoadingScreen(false);
+    }
+
     const addSubjectToContext = (subject) => {
         dispatch({ type: 'addSubject', payload: subject })
     }
@@ -63,6 +77,7 @@ export const SubjectProvider = ({ children }) => {
             fetchSubjects,
             getSubjectsByYearFromContext,
             filterSubjects,
+            assignSubjectToClassRoom,
 
         }}>
             {children}
