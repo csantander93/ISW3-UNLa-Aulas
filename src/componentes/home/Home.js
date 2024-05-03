@@ -1,8 +1,11 @@
-import { default as React, default as React, useState } from "react";
+import { default as React, useState } from "react";
 import styled from "styled-components";
 import { useSubjects } from "../contexts/SubjectContext/useSubjects";
 import { useFetchData } from "../hooks/useFetchData";
 import SubjectsTable from "./SubjectsTable";
+import SubjectsYear from "./SubjectsYear";
+import TableToolbar from "../elements/table_toolbar/TableToolbar";
+import './Home.css';
 
 const Header = styled.header`
 height:100%;
