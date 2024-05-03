@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdRemoveCircle } from "react-icons/io";
 import { MdAddTask } from "react-icons/md";
 import styled from "styled-components";
 import { useSubjects } from "../../contexts/SubjectContext/useSubjects";
+import FormAssign from "./FormAssign";
 
 const Assign = styled(MdAddTask)`
     color: #02890d;
@@ -23,12 +24,15 @@ const Unassign = styled(IoMdRemoveCircle)`
 
 function AssignOrUnassign(props) {
     const { assignSubjectToClassRoom } = useSubjects();
-    const handleAssignClick = async () => {
-        await assignSubjectToClassRoom(props.idAulaAsignada, props.nombreMateria);
+    const [openPopupAssign, setOpenPopupAssign] = useState(false);
+    const handleAssignClick = () => {
+        //await assignSubjectToClassRoom(props.idAulaAsignada, props.nombreMateria);
+         setOpenPopupAssign(true);
     };
     return (
         <div>
             {props.aulaAsignada === 0 ? <Assign title="Asignar" onClick={() => handleAssignClick()} /> : <Unassign title="Desasignar" />}
+            {openPopupAssign && <FormAssign></FormAssign>}
         </div>
     );
 }

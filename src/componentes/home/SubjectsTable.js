@@ -30,7 +30,7 @@ const SubjectsTable = ({ subjects }) => {
           <Th>Docente a Cargo</Th>
           <Th>Aula Asignada</Th>
           <Th>Edificio</Th>
-          <Th>Funciones</Th>
+          <Th>Asignar/Desasignar</Th>
         </tr>
       </thead>
       <tbody>
@@ -46,8 +46,7 @@ const SubjectsTable = ({ subjects }) => {
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
               nombreMateria={subject.nombre}
-              recargarTabla={recargarTabla}
-              anio={anio} />
+               />
             </Td>
           </tr>
         ))}
