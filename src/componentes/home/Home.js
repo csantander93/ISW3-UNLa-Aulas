@@ -5,10 +5,7 @@ import { useFetchData } from "../hooks/useFetchData";
 import SubjectsTable from "./SubjectsTable";
 import SubjectsYear from "./SubjectsYear";
 import TableToolbar from "../elements/table_toolbar/TableToolbar";
-<<<<<<< HEAD
-=======
 import './Home.css';
->>>>>>> rama_dev
 
 const Header = styled.header`
 height:100%;
