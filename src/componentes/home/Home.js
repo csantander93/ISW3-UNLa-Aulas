@@ -36,7 +36,7 @@ function Home() {
       </Header>
       <div>
         <TableToolbar setSubjects={setSubjects} anio={anio}></TableToolbar>
-        {subjects.length > 0 && <SubjectsTable subjects={subjects} />} {/* Mostrar la tabla solo si hay materias seleccionadas */}
+        {subjects.length > 0 && <SubjectsTable subjects={subjects} setSubjects={setSubjects} />} {/* Mostrar la tabla solo si hay materias seleccionadas */}
       </div>
 
     </section>

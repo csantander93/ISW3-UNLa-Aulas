@@ -1,4 +1,11 @@
 import styled from "styled-components";
+import { useSubjects } from "../../contexts/SubjectContext/useSubjects";
+import { useState, useRef, useEffect } from "react";
+import './AssigOrUnassign.css';
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { isPortal } from "react-is";
+import ClassRoomService from "../../services/ClassRoomService";
+import useCommon from "../../contexts/CommonContext/useCommon";
 
 const Overlay = styled.div`
   font-family: sans-serif;
@@ -156,26 +163,118 @@ const Span = styled.span`
   margin-left: 50px;
 `;
 
-function FormAssign(){
+function FormAssign(props){
+
+  const [tipoAula, setTipoAula] = useState(null);
+  const [idAula, setIdAula] = useState(null);
+  const { setScreenMessage, setLoadingScreen } = useCommon();
+  const formA = useRef();
+
+ 
+  //al registrar que hace click afuera, se cierra el formulario
+  const handleClickOutside = (event) => {
+    if (formA.current && !formA.current.contains(event.target)) {
+      props.openPopup();
+    }
+  }
+
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+  }
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleOptionClick = (optionValue) => {
+    setSelectedOption(optionValue);
+    setIsOpen(false);
+  };
+
+  const [isOpenClassroom, setIsOpenClassroom] = useState(false);
+  const [selectedClassroom, setSelectedClassroom] = useState('');
+
+  //cuando se quiere buscar una materia
+ 
+
+  const handleClassroomClick = (classroomValue) =>{
+    setSelectedClassroom(classroomValue);
+    setIsOpenClassroom(false);
+  }
+
+  const [classrooms, setClassrooms] = useState(null);
+
+  //click en el input de "seleccionar aula"
+ 
+
+  //fetch api
+  const findAulasForMateria = async () => {
+    //verifica que el tipo de aula sea valida antes de consumir la api
+    if(selectedOption === ''){
+      alert("Debe ingresar un tipo de aula");
+    }else{
+      setIsOpenClassroom(!isOpenClassroom)
+      if(isOpenClassroom){
+        setLoadingScreen(true);
+    try {
+        const response = await ClassRoomService.findAulasForMateria(props.cantEstudiantes, props.turno, selectedOption);
+        setClassrooms(response.data);
+        console.log(response.data);
+    } catch (error) {
+        console.error("Error al obtener la materias:", error);
+        setIsOpenClassroom(false)
+    }
+    setLoadingScreen(false);
+   }
+  }
+}
+
+      useEffect(() => {
+
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+          document.removeEventListener('mousedown',handleClickOutside);
+        };
+        //se ejecuta si se llega a cambiar la opcion seleccionada
+        findAulasForMateria();
+
+      }, [selectedOption]);
+
     return(
         <Overlay>
-        <FormContainer>
+        <FormContainer ref={formA}>
          <FormTitle>Asignar materia a aula</FormTitle>
-          <Form >
-          <Select required>
-            <Option value="">Selecciona tipo de aula</Option>
-            <Option value="1">Tradicional</Option>
-            <Option value="2">Laboratorio</Option>
-           </Select>
+          <Form onSubmit={handleSubmit}>
+          <div className="custom-select">
+            <div className="selected-option" onClick={() => setIsOpen(!isOpen)}>
+            {selectedOption ? selectedOption : 'Selecciona tipo de aula'}
+            {isOpen ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
+          </div>
+         {isOpen && (
+        <div className="options">
+           <div className="option" onClick={() => handleOptionClick('')}>Selecciona tipo de aula</div>
+           <div className="option" onClick={() => handleOptionClick('Tradicional')}>Tradicional</div>
+           <div className="option" onClick={() => handleOptionClick('Laboratorio')}>Laboratorio</div>
+        </div>
+      )}
+    </div>
 
-           <Label htmlFor="aula">Selecciona aula</Label>
+    <div className="custom-select">
+            <div className="selected-option" onClick={() => findAulasForMateria()}>
+            {selectedClassroom ? selectedClassroom : 'Selecciona aula'}
+            {isOpenClassroom ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
+          </div>
+         {isOpenClassroom && (
+        <div className="classrooms-options">
+          {classrooms?.map((classroom)=>(
+              <div className="option" onClick={() => handleClassroomClick(classroom)}>{classroom.numero} {classroom.edificio} capacaidad:{classroom.capacidad}</div>
+          ))}
+        </div>
+      )}
+    </div>
 
-           <InputListContainer>
-            <Input
-              type="text"
-              placeholder="Buscar aula..."
-            />
-          </InputListContainer>
+         
 
           
           <Button type="submit">Agregar</Button>

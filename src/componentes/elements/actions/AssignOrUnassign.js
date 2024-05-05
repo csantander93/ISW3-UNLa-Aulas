@@ -23,16 +23,17 @@ const Unassign = styled(IoMdRemoveCircle)`
 
 
 function AssignOrUnassign(props) {
-    const { assignSubjectToClassRoom } = useSubjects();
+
     const [openPopupAssign, setOpenPopupAssign] = useState(false);
-    const handleAssignClick = () => {
+    const handleClick = () => {
         //await assignSubjectToClassRoom(props.idAulaAsignada, props.nombreMateria);
-         setOpenPopupAssign(true);
+         setOpenPopupAssign(!openPopupAssign);
     };
     return (
         <div>
-            {props.aulaAsignada === 0 ? <Assign title="Asignar" onClick={() => handleAssignClick()} /> : <Unassign title="Desasignar" />}
-            {openPopupAssign && <FormAssign></FormAssign>}
+            {props.aulaAsignada === 0 ? <Assign title="Asignar" onClick={() => handleClick()} /> : <Unassign title="Desasignar" />}
+            {openPopupAssign && <FormAssign openPopup={handleClick} turno={props.turno}
+              cantEstudiantes={props.cantEstudiantes}></FormAssign>}
         </div>
     );
 }
