@@ -29,6 +29,7 @@ const SubjectsTable = ({ subjects }) => {
           <Th>Cantidad de Alumnos</Th>
           <Th>Docente a Cargo</Th>
           <Th>Aula Asignada</Th>
+          <Th>Tipo de Aula</Th>
           <Th>Edificio</Th>
           <Th>Asignar/Desasignar</Th>
         </tr>
@@ -41,6 +42,7 @@ const SubjectsTable = ({ subjects }) => {
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
+            <Td>{subject.tipoDeAula === "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
             <Td>{subject.edificio}</Td>
             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
