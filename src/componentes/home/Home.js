@@ -1,8 +1,10 @@
-import { default as React, default as React, useState } from "react";
+import { default as React, useState } from "react";
 import styled from "styled-components";
 import { useSubjects } from "../contexts/SubjectContext/useSubjects";
 import { useFetchData } from "../hooks/useFetchData";
 import SubjectsTable from "./SubjectsTable";
+import SubjectsYear from "./SubjectsYear";
+import TableToolbar from "../elements/table_toolbar/TableToolbar";
 
 const Header = styled.header`
 height:100%;
@@ -23,7 +25,7 @@ function Home() {
   const [anio, setAnio] = useState(1);
   const { getSubjectsByYearFromContext } = useSubjects();
   const handleYearSelection = async (index) => {
-    setAnio(index+1);
+    setAnio(index + 1);
     setSubjects(getSubjectsByYearFromContext(index + 1));
   };
   return (

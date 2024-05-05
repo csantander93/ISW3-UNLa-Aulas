@@ -45,9 +45,7 @@ const SubjectsTable = ({ subjects }) => {
             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
-              nombreMateria={subject.nombre}
-              recargarTabla={recargarTabla}
-              anio={anio} />
+              nombreMateria={subject.nombre}/>
             </Td>
           </tr>
         ))}
