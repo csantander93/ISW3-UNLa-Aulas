@@ -40,10 +40,10 @@ export const SubjectProvider = ({ children }) => {
         return filteredSubject;
     }
 
-    const assignSubjectToClassRoom = async (idAulaAsignada, nombreMateria) => {
+    const assignSubjectToClassRoom = async (idAulaAsignada, nombreMateria, turno) => {
         setLoadingScreen(true);
         try {
-            const response = await ClassRoomService.assignSubjectToClassRoom(idAulaAsignada, nombreMateria);
+            const response = await ClassRoomService.assignSubjectToClassRoom(idAulaAsignada, nombreMateria, turno);
             updateSubjectFromContext(response.data);
             setScreenMessage({ message: "Materia: " + nombreMateria + ", asignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200 });
         } catch (error) {
@@ -53,6 +53,18 @@ export const SubjectProvider = ({ children }) => {
         setLoadingScreen(false);
     }
 
+    const unassignSubjectToClassRoom = async (idAulaAsignada, nombreMateria, turno) => {
+        setLoadingScreen(true);
+        try {
+            const response = await ClassRoomService.unassignSubjetToClassRoom(idAulaAsignada, nombreMateria, turno);
+            updateSubjectFromContext(response.data);
+            setScreenMessage({ message: "Materia: " + nombreMateria + ", desasignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200 });
+        } catch (error) {
+            setScreenMessage({ message: "Error al desasignar materia a aula", status: 400 });
+            console.error("Error al asignar materia a aula:", error);
+        }
+        setLoadingScreen(false);
+    }
     const addSubjectToContext = (subject) => {
         dispatch({ type: 'addSubject', payload: subject })
     }
@@ -66,6 +78,8 @@ export const SubjectProvider = ({ children }) => {
     const updateSubjectFromContext = (subject) => {
         dispatch({ type: 'updateSubject', payload: subject })
     }
+    //deberia ir en Classroom context
+   
 
     return (
         <SubjectContext.Provider value={{

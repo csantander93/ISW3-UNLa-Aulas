@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import AssignOrUnassign from "../elements/actions/AssignOrUnassign";
+import { useEffect, useState } from "react";
+import { useSubjects } from "../contexts/SubjectContext/useSubjects";
 
 const Table = styled.table`
   width: 100%; /* Ajustar el ancho de la tabla según tus necesidades */
@@ -18,7 +20,11 @@ const Td = styled.td`
   text-align: center;
 `;
 
-const SubjectsTable = ({ subjects }) => {
+const SubjectsTable = ({ subjects, setSubjects }) => {
+
+  const { getSubjectsByYearFromContext } = useSubjects();
+
+ useEffect(()=>{},[subjects])
 
   return (
     <Table>
@@ -48,6 +54,9 @@ const SubjectsTable = ({ subjects }) => {
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
               nombreMateria={subject.nombre}
+              turno={subject.turno}
+              cantEstudiantes={subject.cantEstudiantes}
+              setSubjects={setSubjects}
                />
             </Td>
           </tr>
