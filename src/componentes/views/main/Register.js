@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'; // Importa los íconos
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useUsers } from "../contexts/UserContext/useUsers";
-import GlobalStyles from "./GlobalStyles";
+import { useUsers } from "../../contexts/UserContext/useUsers";
 import PrincipalBox from "./PrincipalBox";
 
 const IconViewPass = styled(FaRegEyeSlash)`
@@ -101,7 +100,6 @@ function Register() {
   return (
     <>
       <PrincipalBox>
-        <GlobalStyles />
         <FormDiv>
           <form onSubmit={handleSubmit}>
             <Title>Crear Cuenta</Title>

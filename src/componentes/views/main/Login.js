@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { FaLock, FaRegEye, FaRegEyeSlash, FaRegUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useUsers } from "../contexts/UserContext/useUsers";
-import GlobalStyles from "./GlobalStyles";
+import { useUsers } from "../../contexts/UserContext/useUsers";
 import PrincipalBox from "./PrincipalBox";
-
+import './Login.css'
 
 const Button = styled.button`
   margin-top: 10px;
@@ -121,7 +120,7 @@ function Login() {
     e.preventDefault();
 
     const response = await login(formData);
-    response && navigate("/home");
+    response && navigate("/home/index");
   };
 
   const handleTogglePasswordVisibility = () => {
@@ -130,53 +129,54 @@ function Login() {
 
   return (
     <>
-      <GlobalStyles />
-      <PrincipalBox>
-        <FormDiv>
-          <form onSubmit={handleSubmit}>
-            <Title>Bienvenido a UNLa Aulas!</Title>
-            <P>Ingresa tus datos para continuar</P>
+      <section className='login-view'>
+        <PrincipalBox>
+          <FormDiv>
+            <form onSubmit={handleSubmit}>
+              <Title>Bienvenido a UNLa Aulas!</Title>
+              <P>Ingresa tus datos para continuar</P>
+              <Label>Usuario</Label>
+              <InputContainer>
+                <IconUser />
+                <Input
+                  type="text"
+                  name="usuario"
+                  placeholder=" usuario"
+                  value={formData.usuario}
+                  onChange={handleChange}
+                />
+              </InputContainer>
 
-            <Label>Usuario</Label>
-            <InputContainer>
-              <IconUser />
-              <Input
-                type="text"
-                name="usuario"
-                placeholder=" usuario"
-                value={formData.usuario}
-                onChange={handleChange}
-              />
-            </InputContainer>
+              <Label>Contraseña</Label>
+              <InputContainer>
+                <IconPassword />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder=" contraseña"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                {showPassword ? (
+                  <IconViewPass onClick={handleTogglePasswordVisibility} as={FaRegEye} />
+                ) : (
+                  <IconViewPass onClick={handleTogglePasswordVisibility} />
+                )}
+              </InputContainer>
 
-            <Label>Contraseña</Label>
-            <InputContainer>
-              <IconPassword />
-              <Input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder=" contraseña"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {showPassword ? (
-                <IconViewPass onClick={handleTogglePasswordVisibility} as={FaRegEye} />
-              ) : (
-                <IconViewPass onClick={handleTogglePasswordVisibility} />
-              )}
-            </InputContainer>
+              {/* Enlace para recuperar contraseña  NO FUNCIONA AUN*/}
+              <ForgotPasswordLink to="/forgot-password">¿Olvidaste Usuario y/o Contraseña?</ForgotPasswordLink>
 
-            {/* Enlace para recuperar contraseña  NO FUNCIONA AUN*/}
-            <ForgotPasswordLink to="/forgot-password">¿Olvidaste Usuario y/o Contraseña?</ForgotPasswordLink>
+              <Button type="submit">Iniciar Sesión</Button>
 
-            <Button type="submit">Iniciar Sesión</Button>
+              <Link to="/register">
+                <Button>Crear Cuenta</Button>
+              </Link>
+            </form>
+          </FormDiv>
+        </PrincipalBox>
 
-            <Link to="/register">
-              <Button>Crear Cuenta</Button>
-            </Link>
-          </form>
-        </FormDiv>
-      </PrincipalBox>
+      </section>
     </>
   );
 }

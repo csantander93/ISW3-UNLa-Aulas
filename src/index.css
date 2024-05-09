@@ -54,8 +54,10 @@ body {
     outline: none;
     transition: 300ms;
     border-radius: var(--border-radius);
-    background-color: rgb(236, 210, 231);
+    background-color: rgb(92, 74, 119);
     cursor: pointer;
+    text-decoration: none;
+    color: white;
 }
 
 .btn-cmn:hover {
@@ -70,6 +72,8 @@ body {
     background-color: rgb(175, 74, 74);
     font-size: 0.7rem;
     justify-content: space-between !important;
+    animation: show-in var(--transition-time);
+    animation-fill-mode: both;
 }
 
 .chip > span{
@@ -82,8 +86,6 @@ body {
     background-color: grey;
     color: white;
     cursor: pointer;
-    animation: show-in var(--transition-time);
-    animation-fill-mode: both;
     transition: var(--transition-time);
 }
 

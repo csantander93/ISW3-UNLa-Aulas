@@ -1,0 +1,33 @@
+.home {
+    height: 100%;
+    width: 100%;
+
+}
+
+.home>div {
+    box-sizing: border-box;
+    padding: 10px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.home>div>h1 {
+    font-size: 3rem;
+    animation: show-in var(--transition-time);
+    animation-fill-mode: both;
+}
+
+.home>div>h3 {
+    animation: show-in var(--transition-time);
+    animation-fill-mode: both;
+    animation-delay: 100ms;
+}
+
+.home>div>p {
+    animation: show-in var(--transition-time);
+    animation-fill-mode: both;
+    animation-delay: 200ms;
+}

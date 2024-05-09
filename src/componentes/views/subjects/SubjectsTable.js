@@ -1,9 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
-import AssignOrUnassign from "../elements/actions/AssignOrUnassign";
+import AssignOrUnassign from "../../elements/actions/AssignOrUnassign";
 
 const Table = styled.table`
   width: 100%; /* Ajustar el ancho de la tabla según tus necesidades */
   border-collapse: collapse;
+  animation: show-in var(--transition-time);
+  animation-fill-mode: both;
+  & > tbody > tr {
+    transtition: all var(--transition-time);
+    &:hover{
+      cursor:pointer;
+      background-color:rgba(0,0,0,0.1);
+    }
+  }
 `;
 
 const Th = styled.th`
@@ -18,8 +29,10 @@ const Td = styled.td`
   text-align: center;
 `;
 
-const SubjectsTable = ({ subjects }) => {
+const SubjectsTable = ({ subjects, setSubjects }) => {
 
+ useEffect(()=>{},[subjects])
+  const navigate = useNavigate();
   return (
     <Table>
       <thead>
@@ -30,22 +43,26 @@ const SubjectsTable = ({ subjects }) => {
           <Th>Docente a Cargo</Th>
           <Th>Aula Asignada</Th>
           <Th>Edificio</Th>
-          <Th>Funciones</Th>
+          <Th>Asignar/Desasignar</Th>
         </tr>
       </thead>
       <tbody>
         {subjects.map((subject, index) => (
-          <tr key={index}>
+          <tr key={index} onClick={() => navigate(`${subject.nombre}`)}>
             <Td>{subject.nombre}</Td>
             <Td>{subject.turno}</Td>
-            <Td>{subject.cantidadEstudiantes}</Td>
+            <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
             <Td>{subject.edificio}</Td>
             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
-              nombreMateria={subject.nombre}/>
+              nombreMateria={subject.nombre}
+              turno={subject.turno}
+              cantEstudiantes={subject.cantEstudiantes}
+              setSubjects={setSubjects}
+               />
             </Td>
           </tr>
         ))}

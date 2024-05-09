@@ -37,7 +37,7 @@ function TableToolbar({ setSubjects,anio }) {
         } else options = [...optionsSelected, option];
         setOptionsSelected(options);
 
-        setSubjects(filterSubjects(options,anio));
+        anio && setSubjects(filterSubjects(options,Number(anio)));
     }
     return (
         <section className="table-toolbar d-flex flex-j-a-start">
