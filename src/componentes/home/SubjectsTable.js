@@ -48,7 +48,7 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
-            <Td>{subject.tipoDeAula === "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
+            <Td>{subject.tipoDeAula === "Sin asignar" || subject.tipoDeAula === null ? 'Sin asignar' : subject.tipoDeAula}</Td>
             <Td>{subject.edificio}</Td>
             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
