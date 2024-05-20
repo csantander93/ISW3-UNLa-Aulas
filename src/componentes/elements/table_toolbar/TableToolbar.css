@@ -1,0 +1,16 @@
+.table-toolbar{
+    min-height: 50px;
+    margin-bottom: 10px;
+
+}
+
+
+.table-toolbar > section {
+    width: 100%;
+    gap: 10px;
+    min-height: 70px;
+}
+
+.table-toolbar > section > div {
+    gap: 10px;
+}
