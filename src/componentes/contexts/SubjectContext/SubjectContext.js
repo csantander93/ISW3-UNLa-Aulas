@@ -20,6 +20,7 @@ export const SubjectProvider = ({ children }) => {
         try {
             const response = await SubjectService.getSubjects();
             setSubjectsToContext(response.data);
+            //console.log(response.data)
         } catch (error) {
             setScreenMessage({ message: "¡Error al obtener las materias!", status: 400 });
             console.error("Error al obtener las materias:", error);
@@ -29,7 +30,23 @@ export const SubjectProvider = ({ children }) => {
     }
 
     const getSubjectsByYearFromContext = (anio) => {
+        console.log(anio)
         return subjectState.subjects.filter((s) => s.anioPertenece === anio)
+    }
+    const getSubjectsByName = async (name) => {
+        setLoadingScreen(true);
+        try {
+            let response = await SubjectService.getSubjectByName(name);
+            setLoadingScreen(false);
+            return response.data;
+        } catch (error) {
+            setScreenMessage({ message: `¡${error.response.data.mensaje}!`, status: 400 });
+            console.error("Error al obtener la materia:", error);
+            setLoadingScreen(false);
+            return undefined;
+        }
+
+
     }
     const filterSubjects = (filters, anio) => {
         let filteredSubject = getSubjectsByYearFromContext(anio);
@@ -79,7 +96,7 @@ export const SubjectProvider = ({ children }) => {
         dispatch({ type: 'updateSubject', payload: subject })
     }
     //deberia ir en Classroom context
-   
+
 
     return (
         <SubjectContext.Provider value={{
@@ -92,7 +109,7 @@ export const SubjectProvider = ({ children }) => {
             getSubjectsByYearFromContext,
             filterSubjects,
             assignSubjectToClassRoom,
-
+            getSubjectsByName
         }}>
             {children}
         </SubjectContext.Provider>

@@ -1,12 +1,10 @@
 
-import Navbar from "./componentes/elements/navbar/Navbar.js";
+import { useFetchData } from './componentes/hooks/useFetchData';
 import AppRouter from "./componentes/router/AppRouter.js";
-
 function App() {
-
+  useFetchData();
   return (
     <>
-      <Navbar />
       <AppRouter />
     </>
   );

@@ -1,11 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
-import AssignOrUnassign from "../elements/actions/AssignOrUnassign";
-import { useEffect, useState } from "react";
-import { useSubjects } from "../contexts/SubjectContext/useSubjects";
+import AssignOrUnassign from "../../elements/actions/AssignOrUnassign";
 
 const Table = styled.table`
   width: 100%; /* Ajustar el ancho de la tabla según tus necesidades */
   border-collapse: collapse;
+  animation: show-in var(--transition-time);
+  animation-fill-mode: both;
+  & > tbody > tr {
+    transtition: all var(--transition-time);
+    &:hover{
+      cursor:pointer;
+      background-color:rgba(0,0,0,0.1);
+    }
+  }
 `;
 
 const Th = styled.th`
@@ -22,10 +31,8 @@ const Td = styled.td`
 
 const SubjectsTable = ({ subjects, setSubjects }) => {
 
-  const { getSubjectsByYearFromContext } = useSubjects();
-
  useEffect(()=>{},[subjects])
-
+  const navigate = useNavigate();
   return (
     <Table>
       <thead>
@@ -37,20 +44,24 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
           <Th>Aula Asignada</Th>
           <Th>Tipo de Aula</Th>
           <Th>Edificio</Th>
-          <Th>Asignar/Desasignar</Th>
+{/*           <Th>Asignar/Desasignar</Th> */}
         </tr>
       </thead>
       <tbody>
         {subjects.map((subject, index) => (
-          <tr key={index}>
+          <tr key={index} onClick={() => navigate(`${subject.nombre}`)}>
             <Td>{subject.nombre}</Td>
             <Td>{subject.turno}</Td>
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
+<<<<<<< HEAD:src/componentes/home/SubjectsTable.js
             <Td>{subject.tipoDeAula === "Sin asignar" || subject.tipoDeAula === null ? 'Sin asignar' : subject.tipoDeAula}</Td>
+=======
+            <Td>{subject.tipoDeAula === null || subject.tipoDeAula ===  "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
+>>>>>>> rama_dev:src/componentes/views/subjects/SubjectsTable.js
             <Td>{subject.edificio}</Td>
-            <Td><AssignOrUnassign
+{/*             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
               nombreMateria={subject.nombre}
@@ -58,7 +69,7 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
               cantEstudiantes={subject.cantEstudiantes}
               setSubjects={setSubjects}
                />
-            </Td>
+            </Td> */}
           </tr>
         ))}
       </tbody>

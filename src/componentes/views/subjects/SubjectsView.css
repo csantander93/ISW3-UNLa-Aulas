@@ -1,0 +1,4 @@
+.subjects-view{
+    display: flex;
+    flex-direction: column;
+}

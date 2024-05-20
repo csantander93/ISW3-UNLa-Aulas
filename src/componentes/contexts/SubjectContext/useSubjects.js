@@ -15,11 +15,13 @@ export const useSubjects = () => {
         fetchSubjects,
         filterSubjects,
         assignSubjectToClassRoom,
+        getSubjectsByName,
         getSubjectsByYearFromContext } = useContext(SubjectContext);
     const { subjects } = subjectState;
 
     return {
         subjects,
+        getSubjectsByName,
         assignSubjectToClassRoom,
         fetchSubjects,
         updateSubjectFromContext,

@@ -7,9 +7,7 @@
     cursor: pointer;
    
 }
-.dropdown > div:nth-child(1){
-    
-}
+
 .dropdown > div:nth-child(1) > span{
     display: block;
     width: 100%;
@@ -22,7 +20,7 @@
     display: flex;
     position: absolute;
     width: 100%;
-    top: 40px;
+    top: 28px;
     left: 0;
     z-index: 1;
     height: 0%;

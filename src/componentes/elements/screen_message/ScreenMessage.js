@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import useCommon from "../../contexts/CommonContext/useCommon";
 import './ScreenMessage.css'
+import { UtilService } from "../../services/utilService";
 
 
 const DEFAULT_MESSAGE = {
@@ -44,7 +45,7 @@ const ScreenMessage = () => {
     const displayPopUp = () => {
         return (
             <div className="d-flex  flex-d-c flex-j-a-c br-rd">
-                <img src={`../icons/${displayIcon()}`} alt="Icono de respuesta" width={30} />
+                <img src={UtilService.resolveIconImage(displayIcon())} alt="Icono de respuesta" width={30} />
                 <h3>{displayMessage()}</h3>
                 <p>{screenMessage.message}</p>
                 <button type="button" className="btn-cmn" onClick={(e) => close(e)}>Cerrar</button>
