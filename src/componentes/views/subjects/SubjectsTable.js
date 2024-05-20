@@ -44,7 +44,7 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
           <Th>Aula Asignada</Th>
           <Th>Tipo de Aula</Th>
           <Th>Edificio</Th>
-          <Th>Asignar/Desasignar</Th>
+{/*           <Th>Asignar/Desasignar</Th> */}
         </tr>
       </thead>
       <tbody>
@@ -55,9 +55,9 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
-            <Td>{subject.tipoDeAula === "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
+            <Td>{subject.tipoDeAula === null || subject.tipoDeAula ===  "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
             <Td>{subject.edificio}</Td>
-            <Td><AssignOrUnassign
+{/*             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
               nombreMateria={subject.nombre}
@@ -65,7 +65,7 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
               cantEstudiantes={subject.cantEstudiantes}
               setSubjects={setSubjects}
                />
-            </Td>
+            </Td> */}
           </tr>
         ))}
       </tbody>

@@ -20,6 +20,7 @@ export const SubjectProvider = ({ children }) => {
         try {
             const response = await SubjectService.getSubjects();
             setSubjectsToContext(response.data);
+            //console.log(response.data)
         } catch (error) {
             setScreenMessage({ message: "¡Error al obtener las materias!", status: 400 });
             console.error("Error al obtener las materias:", error);
@@ -29,6 +30,7 @@ export const SubjectProvider = ({ children }) => {
     }
 
     const getSubjectsByYearFromContext = (anio) => {
+        console.log(anio)
         return subjectState.subjects.filter((s) => s.anioPertenece === anio)
     }
     const getSubjectsByName = async (name) => {

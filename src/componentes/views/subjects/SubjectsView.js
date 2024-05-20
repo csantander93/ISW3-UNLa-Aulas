@@ -11,7 +11,7 @@ function SubjectsView() {
 
     const { getSubjectsByYearFromContext } = useSubjects();
     useEffect(() => {
-        anio && handleYearSelection(Number(anio))
+        anio && handleYearSelection(Number(anio) - 1)
     }, [anio])
     const handleYearSelection = async (index) => {
         setSubjects(getSubjectsByYearFromContext(index + 1));
