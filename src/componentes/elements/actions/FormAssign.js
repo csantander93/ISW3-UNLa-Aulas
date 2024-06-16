@@ -7,6 +7,7 @@ import { isPortal } from "react-is";
 import ClassRoomService from "../../services/ClassRoomService";
 import useCommon from "../../contexts/CommonContext/useCommon";
 
+
 const Overlay = styled.div`
   font-family: sans-serif;
   position: fixed;
@@ -181,7 +182,7 @@ function FormAssign(props){
   const [idAula, setIdAula] = useState(null);
   const { setScreenMessage, setLoadingScreen } = useCommon();
   const formA = useRef();
-
+  const { assignSubjectToClassRoom } = useSubjects();
  
   //al registrar que hace click afuera, se cierra el formulario
   const handleClickOutside = (event) => {
@@ -190,19 +191,32 @@ function FormAssign(props){
     }
   }
 
-  const handleSubmit = (e)=>{
+  const handleAssign = async(e)=>{
     e.preventDefault();
+
+    const objectAssign = {
+      idAula: aulaSeleccionada,
+      nombreMateria:props.nombreMateria.trim(),
+      turnoMateria: props.turno.trim()
+    }
+    assignSubjectToClassRoom(objectAssign.idAula, objectAssign.nombreMateria, objectAssign.turnoMateria);
   }
 
+  //---------TIPO DE AULA-----------
   const [listadoTipoAulaOpen, setListadoTipoAulaOpen] = useState(false);
   const [tipoAulaSeleccionada, setTipoAulaSeleccionada] = useState('');
 
   //selecciona el tipo de aula y lo almacena en un estado
   const tipoAulaOptionClick = (optionValue) => {
-    setTipoAulaSeleccionada(optionValue);
+    //ya que vamos a llamar a la api que carga las aulas, nos aseguramos que se vacíe cada vez que se selecciona un nuevo tipo
     setListadoTipoAulaOpen(false);
+    if(tipoAulaSeleccionada !== optionValue){
+      setTipoAulaSeleccionada(optionValue);
+      setClassrooms(null);
+    }
   };
 
+  //------AULA-----------
   const [listadoAulasOpen, setListadoAulasOpen] = useState(false);
   const [aulaSeleccionada, setAulaSeleccionada] = useState('');
 
@@ -244,24 +258,31 @@ function FormAssign(props){
   }
 }
 
+       // Ref para manejar la búsqueda de aulas
+    
+     const [buscarAulas, setBuscarAulas] = useState(false)
+
       useEffect(() => {
 
+        if (buscarAulas && tipoAulaSeleccionada !== '') {
+          findAulasForMateria();
+          setBuscarAulas(false);
+        }
 
         document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
           document.removeEventListener('mousedown',handleClickOutside);
         };
-        //se ejecuta si se llega a cambiar la opcion seleccionada
-        findAulasForMateria();
 
-      }, [tipoAulaSeleccionada]);
+      }, [buscarAulas, tipoAulaSeleccionada]);
 
+     
     return(
         <Overlay>
         <FormContainer ref={formA}>
          <FormTitle>Asignar materia a aula</FormTitle>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleAssign}>
           <div className="custom-select">
                 <div className="selected-option" onClick={() => setListadoTipoAulaOpen(!listadoTipoAulaOpen)}>
                 {tipoAulaSeleccionada ? tipoAulaSeleccionada : 'Selecciona tipo de aula'}
@@ -276,7 +297,7 @@ function FormAssign(props){
       )}
          </div>
                {/*se muestra el boton unicamente si hay selecionada un tipo de aula */}
-         {tipoAulaSeleccionada!=='' && <BotonBuscarAulas onClick={() => findAulasForMateria()}>Buscar aulas</BotonBuscarAulas>}
+         {tipoAulaSeleccionada!=='' && <BotonBuscarAulas onClick={() => {setBuscarAulas(true)}}>Buscar aulas</BotonBuscarAulas>}
 
    {/* <div className="custom-select">
             <div className="selected-option" onClick={() => findAulasForMateria()}>
@@ -298,7 +319,7 @@ function FormAssign(props){
           <select id="mySelect" value={aulaSeleccionada} onChange={handleSeleccionAula}>
             <option value="">Seleccione aula</option>
             {classrooms.map((classroom) => (
-              <option key={classroom.numero} value={classroom.numero}>
+              <option key={classroom.id} value={classroom.id}>
                 {classroom.numero} {classroom.edificio} capacidad: {classroom.capacidad} {classroom.tipoDeAula}
               </option>
              ))}
