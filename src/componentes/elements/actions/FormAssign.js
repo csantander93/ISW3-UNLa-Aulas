@@ -193,13 +193,17 @@ function FormAssign(props){
 
   const handleAssign = async(e)=>{
     e.preventDefault();
-
-    const objectAssign = {
-      idAula: aulaSeleccionada,
-      nombreMateria:props.nombreMateria.trim(),
-      turnoMateria: props.turno.trim()
+    if(tipoAulaSeleccionada === '' || aulaSeleccionada === ''){
+      window.alert("Error: No pueden existir datos vacíos");
+    }else{
+      const objectAssign = {
+        idAula: aulaSeleccionada,
+        nombreMateria:props.nombreMateria.trim(),
+        turnoMateria: props.turno.trim()
+      }
+      assignSubjectToClassRoom(objectAssign.idAula, objectAssign.nombreMateria, objectAssign.turnoMateria);
     }
-    assignSubjectToClassRoom(objectAssign.idAula, objectAssign.nombreMateria, objectAssign.turnoMateria);
+   
   }
 
   //---------TIPO DE AULA-----------
