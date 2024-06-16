@@ -25,6 +25,8 @@ const Unassign = styled(IoMdRemoveCircle)`
 function AssignOrUnassign(props) {
 
     const [openPopupAssign, setOpenPopupAssign] = useState(false);
+
+    //funcion que se ejecuta desde FromAssign
     const handleClick = () => {
         //await assignSubjectToClassRoom(props.idAulaAsignada, props.nombreMateria);
          setOpenPopupAssign(!openPopupAssign);

@@ -163,6 +163,18 @@ const Span = styled.span`
   margin-left: 50px;
 `;
 
+const BotonBuscarAulas = styled.span`
+ margin-top: 5px;
+ margin-bottom: 5px;
+ padding: 3px;
+ background-color: brown;
+ border-radius: 10px;
+ &:hover{
+  background-color: orange;
+ }
+
+`;
+
 function FormAssign(props){
 
   const [tipoAula, setTipoAula] = useState(null);
@@ -182,46 +194,50 @@ function FormAssign(props){
     e.preventDefault();
   }
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [listadoTipoAulaOpen, setListadoTipoAulaOpen] = useState(false);
+  const [tipoAulaSeleccionada, setTipoAulaSeleccionada] = useState('');
 
-  const handleOptionClick = (optionValue) => {
-    setSelectedOption(optionValue);
-    setIsOpen(false);
+  //selecciona el tipo de aula y lo almacena en un estado
+  const tipoAulaOptionClick = (optionValue) => {
+    setTipoAulaSeleccionada(optionValue);
+    setListadoTipoAulaOpen(false);
   };
 
-  const [isOpenClassroom, setIsOpenClassroom] = useState(false);
-  const [selectedClassroom, setSelectedClassroom] = useState('');
+  const [listadoAulasOpen, setListadoAulasOpen] = useState(false);
+  const [aulaSeleccionada, setAulaSeleccionada] = useState('');
 
   //cuando se quiere buscar una materia
  
 
-  const handleClassroomClick = (classroomValue) =>{
-    setSelectedClassroom(classroomValue);
-    setIsOpenClassroom(false);
+  const aulaClick = (classroomValue) =>{
+    setAulaSeleccionada(classroomValue);
+    setListadoAulasOpen(false);
   }
 
   const [classrooms, setClassrooms] = useState(null);
 
   //click en el input de "seleccionar aula"
- 
+ const handleSeleccionAula = (e) => {
+  setAulaSeleccionada(e.target.value);
+ }
 
   //fetch api
   const findAulasForMateria = async () => {
     //verifica que el tipo de aula sea valida antes de consumir la api
-    if(selectedOption === ''){
+    if(tipoAulaSeleccionada === ''){
       alert("Debe ingresar un tipo de aula");
     }else{
-      setIsOpenClassroom(!isOpenClassroom)
-      if(isOpenClassroom){
+      setListadoAulasOpen(!listadoAulasOpen)
+      if(listadoAulasOpen){
         setLoadingScreen(true);
     try {
-        const response = await ClassRoomService.findAulasForMateria(props.cantEstudiantes, props.turno, selectedOption);
+        console.log(props.cantEstudiantes, props.turno, tipoAulaSeleccionada)
+        const response = await ClassRoomService.findAulasForMateria(props.cantEstudiantes, props.turno, tipoAulaSeleccionada);
         setClassrooms(response.data);
         console.log(response.data);
     } catch (error) {
         console.error("Error al obtener la materias:", error);
-        setIsOpenClassroom(false)
+        setListadoAulasOpen(false)
     }
     setLoadingScreen(false);
    }
@@ -239,7 +255,7 @@ function FormAssign(props){
         //se ejecuta si se llega a cambiar la opcion seleccionada
         findAulasForMateria();
 
-      }, [selectedOption]);
+      }, [tipoAulaSeleccionada]);
 
     return(
         <Overlay>
@@ -247,32 +263,49 @@ function FormAssign(props){
          <FormTitle>Asignar materia a aula</FormTitle>
           <Form onSubmit={handleSubmit}>
           <div className="custom-select">
-            <div className="selected-option" onClick={() => setIsOpen(!isOpen)}>
-            {selectedOption ? selectedOption : 'Selecciona tipo de aula'}
-            {isOpen ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
-          </div>
-         {isOpen && (
-        <div className="options">
-           <div className="option" onClick={() => handleOptionClick('')}>Selecciona tipo de aula</div>
-           <div className="option" onClick={() => handleOptionClick('Tradicional')}>Tradicional</div>
-           <div className="option" onClick={() => handleOptionClick('Laboratorio')}>Laboratorio</div>
-        </div>
+                <div className="selected-option" onClick={() => setListadoTipoAulaOpen(!listadoTipoAulaOpen)}>
+                {tipoAulaSeleccionada ? tipoAulaSeleccionada : 'Selecciona tipo de aula'}
+                {listadoTipoAulaOpen ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
+                </div>
+            {listadoTipoAulaOpen && (
+            <div className="options">
+              <div className="option" onClick={() => tipoAulaOptionClick('')}>Selecciona tipo de aula</div>
+              <div className="option" onClick={() => tipoAulaOptionClick('Tradicional')}>Tradicional</div>
+              <div className="option" onClick={() => tipoAulaOptionClick('Laboratorio')}>Laboratorio</div>
+            </div>
       )}
-    </div>
+         </div>
+               {/*se muestra el boton unicamente si hay selecionada un tipo de aula */}
+         {tipoAulaSeleccionada!=='' && <BotonBuscarAulas onClick={() => findAulasForMateria()}>Buscar aulas</BotonBuscarAulas>}
 
-    <div className="custom-select">
+   {/* <div className="custom-select">
             <div className="selected-option" onClick={() => findAulasForMateria()}>
-            {selectedClassroom ? selectedClassroom : 'Selecciona aula'}
-            {isOpenClassroom ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
+            {aulaSeleccionada ? aulaSeleccionada : 'Selecciona aula'}
+            {listadoAulasOpen ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
           </div>
-         {isOpenClassroom && (
+          
+         {listadoAulasOpen && (
         <div className="classrooms-options">
           {classrooms?.map((classroom)=>(
-              <div className="option" onClick={() => handleClassroomClick(classroom)}>{classroom.numero} {classroom.edificio} capacaidad:{classroom.capacidad}</div>
+              <div className="option" onClick={() => aulaClick(classroom)}>{classroom.numero} {classroom.edificio} capacaidad:{classroom.capacidad}</div>
           ))}
         </div>
+      </div>
       )}
-    </div>
+      */}
+        {/*se muestra unicamente si el listado de materias esta completo */}
+        {classrooms && (
+          <select id="mySelect" value={aulaSeleccionada} onChange={handleSeleccionAula}>
+            <option value="">Seleccione aula</option>
+            {classrooms.map((classroom) => (
+              <option key={classroom.numero} value={classroom.numero}>
+                {classroom.numero} {classroom.edificio} capacidad: {classroom.capacidad} {classroom.tipoDeAula}
+              </option>
+             ))}
+          </select>
+          )}
+
+    
 
          
 
