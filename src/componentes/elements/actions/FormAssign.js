@@ -180,14 +180,14 @@ function FormAssign(props){
 
   const [tipoAula, setTipoAula] = useState(null);
   const [idAula, setIdAula] = useState(null);
-  const { setScreenMessage, setLoadingScreen } = useCommon();
+  const { setScreenMessage, setLoadingScreen , loadingScreen} = useCommon();
   const formA = useRef();
   const { assignSubjectToClassRoom } = useSubjects();
  
   //al registrar que hace click afuera, se cierra el formulario
   const handleClickOutside = (event) => {
     if (formA.current && !formA.current.contains(event.target)) {
-      props.openPopup();
+      props.openPopup(); 
     }
   }
 
@@ -301,23 +301,8 @@ function FormAssign(props){
       )}
          </div>
                {/*se muestra el boton unicamente si hay selecionada un tipo de aula */}
-         {tipoAulaSeleccionada!=='' && <BotonBuscarAulas onClick={() => {setBuscarAulas(true)}}>Buscar aulas</BotonBuscarAulas>}
+         {tipoAulaSeleccionada!=='' && <div className="buscar" onClick={() => {setBuscarAulas(true)}}>Buscar aulas</div>}
 
-   {/* <div className="custom-select">
-            <div className="selected-option" onClick={() => findAulasForMateria()}>
-            {aulaSeleccionada ? aulaSeleccionada : 'Selecciona aula'}
-            {listadoAulasOpen ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
-          </div>
-          
-         {listadoAulasOpen && (
-        <div className="classrooms-options">
-          {classrooms?.map((classroom)=>(
-              <div className="option" onClick={() => aulaClick(classroom)}>{classroom.numero} {classroom.edificio} capacaidad:{classroom.capacidad}</div>
-          ))}
-        </div>
-      </div>
-      )}
-      */}
         {/*se muestra unicamente si el listado de materias esta completo */}
         {classrooms && (
           <select id="mySelect" value={aulaSeleccionada} onChange={handleSeleccionAula}>

@@ -55,3 +55,15 @@
     font-size: 20px;
     margin-left: 5px;
 }
+
+.buscar{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 3px;
+    background-color: brown;
+    border-radius: 10px;
+}
+
+.buscar:hover{
+    background-color: orange;
+}
