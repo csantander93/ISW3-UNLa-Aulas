@@ -7,6 +7,7 @@ import { isPortal } from "react-is";
 import ClassRoomService from "../../services/ClassRoomService";
 import useCommon from "../../contexts/CommonContext/useCommon";
 
+
 const Overlay = styled.div`
   font-family: sans-serif;
   position: fixed;
@@ -46,100 +47,10 @@ const Form = styled.form`
   margin-left: 0;
 `;
 
-const Label = styled.label`
-  margin-right: auto ;
-  margin-bottom: 10px;
-  margin-top: 30px;
-  text-align: left;
-`;
 
-const Input = styled.input`
-  padding: 8px;
-  margin-bottom: 0;
-  margin-right: auto;
-  width: 70%;
-  height: 10px;
-  border: 1px solid #9fffff;
-  border-radius: 5px;
-  &:focus {
-    border-color: blue;
-    outline: none;
-  }
-`;
-
-const Select = styled.select`
-  padding: 8px;
-  margin-bottom: 30px;
-  margin-right: auto;
-  font-size: 12px;
-  width: 30%;
-  height: 30px;
-  border: 1px solid #9fffff;
-  border-radius: 5px;
-  appearance: none; /* Elimina el estilo predeterminado del sistema */
-  &:focus {
-    border-color: blue;
-    outline: none;
-  }
-`;
-
-const Option = styled.option`
- appearance: none; /* Elimina el estilo predeterminado del sistema */
-font-family: sans-serif;
-font-size: 13px;
-background-color: #b9bac0;
-border: 1px solid #9fffff;
-border-radius: 5px;
-margin-top: 10px;
-`;
-
-const Ul = styled.ul`
- position: absolute;
- background-color:  #0F0F0F;
- margin: 0;
- margin-top: 3px;
- padding: 0;
- width: 50%;
- min-height: 400%;
- max-height: 800%;
- border-radius: 5px;
- box-shadow: 0px 0px 5px 1px #c9c9c9;
- overflow-y: auto;
-  /* Estilo para el contenedor del scroll */
-  &::-webkit-scrollbar {
-   width: 10px;
- }
-
- /* Estilo para la barra de scroll */
- &::-webkit-scrollbar-thumb {
-   background: #888; 
-   border-radius: 10px;
- }
-
- /* Estilo para la barra de scroll cuando se pasa el mouse por encima */
- &::-webkit-scrollbar-thumb:hover {
-   background: #555; 
- }
-`;
-
-const UserListItem = styled.li`
-  margin-bottom: 0px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  cursor: pointer;
-  color: #c9c9c9;
-  width: 100%;
-  list-style: none;
-  border-radius: 5px;
-  &:hover {
-    background-color:#545454;
-  }
-`;
 
 const Button = styled.button`
   padding: 10px 20px;
-  margin-top: 10px;
-  margin-left: auto;
   background-color: #126b78;
   color: white;
   border: none;
@@ -153,135 +64,115 @@ const Button = styled.button`
   }
 `;
 
-const InputListContainer = styled.div`
-   width: 90%;
-   position: relative;
-`;
 
-const Span = styled.span`
-  padding-top: 10px;
-  margin-left: 50px;
-`;
-
-function FormAssign(props){
-
-  const [tipoAula, setTipoAula] = useState(null);
-  const [idAula, setIdAula] = useState(null);
-  const { setScreenMessage, setLoadingScreen } = useCommon();
+function FormAssign({ openPopup, turno, nombreMateria, cantEstudiantes }) {
+  const { setLoadingScreen } = useCommon();
   const formA = useRef();
+  const { assignSubjectToClassRoom } = useSubjects();
 
- 
-  //al registrar que hace click afuera, se cierra el formulario
-  const handleClickOutside = (event) => {
-    if (formA.current && !formA.current.contains(event.target)) {
-      props.openPopup();
-    }
-  }
 
-  const handleSubmit = (e)=>{
+  const handleAssign = async (e) => {
     e.preventDefault();
+    if (tipoAulaSeleccionada === '' || aulaSeleccionada === '') {
+      window.alert("Error: No pueden existir datos vacíos");
+    } else {
+      const objectAssign = {
+        idAula: aulaSeleccionada,
+        nombreMateria: nombreMateria.trim(),
+        turnoMateria: turno.trim()
+      }
+      await assignSubjectToClassRoom(objectAssign.idAula, objectAssign.nombreMateria, objectAssign.turnoMateria);
+    }
+
   }
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+  //---------TIPO DE AULA-----------
+  const [listadoTipoAulaOpen, setListadoTipoAulaOpen] = useState(false);
+  const [tipoAulaSeleccionada, setTipoAulaSeleccionada] = useState('');
 
-  const handleOptionClick = (optionValue) => {
-    setSelectedOption(optionValue);
-    setIsOpen(false);
-  };
 
-  const [isOpenClassroom, setIsOpenClassroom] = useState(false);
-  const [selectedClassroom, setSelectedClassroom] = useState('');
+
+  //------AULA-----------
+  const [listadoAulasOpen, setListadoAulasOpen] = useState(false);
+  const [aulaSeleccionada, setAulaSeleccionada] = useState('');
 
   //cuando se quiere buscar una materia
- 
-
-  const handleClassroomClick = (classroomValue) =>{
-    setSelectedClassroom(classroomValue);
-    setIsOpenClassroom(false);
-  }
-
   const [classrooms, setClassrooms] = useState(null);
-
-  //click en el input de "seleccionar aula"
- 
 
   //fetch api
   const findAulasForMateria = async () => {
     //verifica que el tipo de aula sea valida antes de consumir la api
-    if(selectedOption === ''){
+    if (tipoAulaSeleccionada === '') {
       alert("Debe ingresar un tipo de aula");
-    }else{
-      setIsOpenClassroom(!isOpenClassroom)
-      if(isOpenClassroom){
-        setLoadingScreen(true);
-    try {
-        const response = await ClassRoomService.findAulasForMateria(props.cantEstudiantes, props.turno, selectedOption);
+    } else {
+      setListadoAulasOpen(!listadoAulasOpen)
+      setLoadingScreen(true);
+      try {
+        const response = await ClassRoomService.findAulasForMateria(cantEstudiantes, turno, tipoAulaSeleccionada);
         setClassrooms(response.data);
-        console.log(response.data);
-    } catch (error) {
+      } catch (error) {
         console.error("Error al obtener la materias:", error);
-        setIsOpenClassroom(false)
+        setListadoAulasOpen(false)
+      }
+      setLoadingScreen(false);
     }
-    setLoadingScreen(false);
-   }
   }
-}
 
-      useEffect(() => {
+  // Ref para manejar la búsqueda de aulas
 
 
-        document.addEventListener('mousedown', handleClickOutside);
 
-        return () => {
-          document.removeEventListener('mousedown',handleClickOutside);
-        };
-        //se ejecuta si se llega a cambiar la opcion seleccionada
-        findAulasForMateria();
+  useEffect(() => {
+    if (tipoAulaSeleccionada !== '') {
+      findAulasForMateria();
+    } else setClassrooms(null);
+  }, [tipoAulaSeleccionada]);
 
-      }, [selectedOption]);
 
-    return(
-        <Overlay>
-        <FormContainer ref={formA}>
-         <FormTitle>Asignar materia a aula</FormTitle>
-          <Form onSubmit={handleSubmit}>
+  return (
+    <Overlay>
+      <FormContainer ref={formA}>
+        <FormTitle>Asignar materia a aula</FormTitle>
+        <Form onSubmit={handleAssign}>
           <div className="custom-select">
-            <div className="selected-option" onClick={() => setIsOpen(!isOpen)}>
-            {selectedOption ? selectedOption : 'Selecciona tipo de aula'}
-            {isOpen ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
+            <div className="selected-option" onClick={() => setListadoTipoAulaOpen(!listadoTipoAulaOpen)}>
+              {tipoAulaSeleccionada ? tipoAulaSeleccionada : 'Selecciona tipo de aula'}
+              {listadoTipoAulaOpen ? < IoMdArrowDropup className="arrow" /> : <IoMdArrowDropdown className="arrow" />}
+            </div>
+            {listadoTipoAulaOpen && (
+              <div className="options">
+                <div className="option" onClick={() => setTipoAulaSeleccionada('')}>Selecciona tipo de aula</div>
+                <div className="option" onClick={() => setTipoAulaSeleccionada('Tradicional')}>Tradicional</div>
+                <div className="option" onClick={() => setTipoAulaSeleccionada('Laboratorio')}>Laboratorio</div>
+              </div>
+            )}
           </div>
-         {isOpen && (
-        <div className="options">
-           <div className="option" onClick={() => handleOptionClick('')}>Selecciona tipo de aula</div>
-           <div className="option" onClick={() => handleOptionClick('Tradicional')}>Tradicional</div>
-           <div className="option" onClick={() => handleOptionClick('Laboratorio')}>Laboratorio</div>
-        </div>
-      )}
-    </div>
 
-    <div className="custom-select">
-            <div className="selected-option" onClick={() => findAulasForMateria()}>
-            {selectedClassroom ? selectedClassroom : 'Selecciona aula'}
-            {isOpenClassroom ? < IoMdArrowDropup className="arrow"/> : <IoMdArrowDropdown className="arrow"/> }
+          {/*se muestra unicamente si el listado de materias esta completo */}
+          {classrooms && (
+
+            <section className="classroom-list-wrapper">
+              {classrooms.map((classroom) => (
+                <div style={ classroom.id === aulaSeleccionada ? {background:"#b9b9b9"} : {}} onClick={() => setAulaSeleccionada(classroom.id)} key={classroom.id} >
+                  <span>{classroom.numero}</span>
+                  <span>{classroom.edificio}</span>
+                  <span>capacidad :{classroom.capacidad} </span>
+                  <span>{classroom.tipoDeAula} </span>
+
+                </div>
+              ))}
+            </section>
+          )}
+
+          <div className="wrap-buttons">
+            <Button onClick={() => openPopup(false)}>Cerrar</Button>
+            <Button type="submit">Agregar</Button>
           </div>
-         {isOpenClassroom && (
-        <div className="classrooms-options">
-          {classrooms?.map((classroom)=>(
-              <div className="option" onClick={() => handleClassroomClick(classroom)}>{classroom.numero} {classroom.edificio} capacaidad:{classroom.capacidad}</div>
-          ))}
-        </div>
-      )}
-    </div>
 
-         
-
-          
-          <Button type="submit">Agregar</Button>
         </Form>
       </FormContainer>
-      </Overlay>
-    );
+    </Overlay>
+  );
 }
 
 export default FormAssign;

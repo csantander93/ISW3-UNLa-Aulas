@@ -29,6 +29,18 @@ const Td = styled.td`
   text-align: center;
 `;
 
+const Td_Name = styled.td`
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    color: #900c0c;
+    text-decoration: underline;
+  }
+`;
+
 const SubjectsTable = ({ subjects, setSubjects }) => {
 
  useEffect(()=>{},[subjects])
@@ -44,20 +56,20 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
           <Th>Aula Asignada</Th>
           <Th>Tipo de Aula</Th>
           <Th>Edificio</Th>
-{/*           <Th>Asignar/Desasignar</Th> */}
+          <Th>Asignar/Desasignar</Th> 
         </tr>
       </thead>
       <tbody>
         {subjects.map((subject, index) => (
-          <tr key={index} onClick={() => navigate(`${subject.nombre}`)}>
-            <Td>{subject.nombre}</Td>
+          <tr key={index}>
+            <Td_Name onClick={() => navigate(`${subject.nombre}`)}>{subject.nombre} </Td_Name>
             <Td>{subject.turno}</Td>
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
             <Td>{subject.tipoDeAula === null || subject.tipoDeAula ===  "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
             <Td>{subject.edificio}</Td>
-{/*             <Td><AssignOrUnassign
+             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
               idAulaAsignada={subject.idAulaAsignada}
               nombreMateria={subject.nombre}
@@ -65,7 +77,8 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
               cantEstudiantes={subject.cantEstudiantes}
               setSubjects={setSubjects}
                />
-            </Td> */}
+            </Td> 
+            
           </tr>
         ))}
       </tbody>

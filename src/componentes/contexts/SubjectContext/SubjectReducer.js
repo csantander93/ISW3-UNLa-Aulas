@@ -18,6 +18,7 @@ export const SubjectReducer = (state, action) => {
             }
         case 'updateSubjectToContext':
             let subjects = state.subjects;
+            debugger;
             for (let i = 0; i < subjects.length; i++) {
                 if (subjects[i].idSubject === action.payload.idSubject)
                     subjects[i] = action.payload;
