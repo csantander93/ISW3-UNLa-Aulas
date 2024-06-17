@@ -20,7 +20,6 @@ export const SubjectProvider = ({ children }) => {
         try {
             const response = await SubjectService.getSubjects();
             setSubjectsToContext(response.data);
-            //console.log(response.data)
         } catch (error) {
             setScreenMessage({ message: "¡Error al obtener las materias!", status: 400 });
             console.error("Error al obtener las materias:", error);
@@ -30,7 +29,6 @@ export const SubjectProvider = ({ children }) => {
     }
 
     const getSubjectsByYearFromContext = (anio) => {
-        console.log(anio)
         return subjectState.subjects.filter((s) => s.anioPertenece === anio)
     }
     const getSubjectsByName = async (name) => {
@@ -61,8 +59,8 @@ export const SubjectProvider = ({ children }) => {
         setLoadingScreen(true);
         try {
             const response = await ClassRoomService.assignSubjectToClassRoom(idAulaAsignada, nombreMateria, turno);
-            updateSubjectFromContext(response.data);
-            setScreenMessage({ message: "Materia: " + nombreMateria + ", asignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200 });
+            let anio = subjectState.subjects.find(s => s.nombre === nombreMateria).anioPertenece;
+            setScreenMessage({ message: "Materia: " + nombreMateria + ", asignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200,returnPath:`/home/subjects/${anio}` });
         } catch (error) {
             setScreenMessage({ message: "Error al asignar materia a aula", status: 400 });
             console.error("Error al asignar materia a aula:", error);
@@ -75,8 +73,8 @@ export const SubjectProvider = ({ children }) => {
             setLoadingScreen(true);
             try {
                 const response = await ClassRoomService.unassignSubjetToClassRoom(idAulaAsignada, nombreMateria, turno);
-                updateSubjectFromContext(response.data);
-                setScreenMessage({ message: "Materia: " + nombreMateria + ", desasignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200 });
+                let anio = subjectState.subjects.find(s => s.nombre === nombreMateria).anioPertenece;
+                setScreenMessage({ message: "Materia: " + nombreMateria + ", desasignada a aula con id: " + idAulaAsignada + " exitosamente", status: 200,returnPath:`/home/subjects/${anio}` });
             } catch (error) {
                 setScreenMessage({ message: "Error al desasignar materia a aula", status: 400 });
                 console.error("Error al asignar materia a aula:", error);

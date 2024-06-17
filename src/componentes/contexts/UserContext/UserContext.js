@@ -16,7 +16,6 @@ export const UserProvider = ({ children }) => {
     setLoadingScreen(true);
     try {
       const response = await UserService.login(formData);
-      console.log(response)
       setUserLogged(response.data);
       window.localStorage.setItem('token', response.data.token);
       // Guarda los datos del usuario en localStorage

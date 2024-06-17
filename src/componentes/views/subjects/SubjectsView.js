@@ -7,12 +7,13 @@ import './SubjectsView.css'
 const materias = ["1er", "2do", "3er", "4to", "5to"];
 function SubjectsView() {
     const { anio } = useParams();
-    const [subjects, setSubjects] = useState([]);
+    const [subjectsByYear, setSubjects] = useState([]);
 
-    const { getSubjectsByYearFromContext } = useSubjects();
+    const { getSubjectsByYearFromContext,subjects } = useSubjects();
     useEffect(() => {
         anio && handleYearSelection(Number(anio) - 1)
-    }, [anio])
+    }, [anio,subjects])
+
     const handleYearSelection = async (index) => {
         setSubjects(getSubjectsByYearFromContext(index + 1));
     };
@@ -21,7 +22,7 @@ function SubjectsView() {
         <section className="subjects-view d-flex">
             <TableToolbar setSubjects={setSubjects} anio={anio}></TableToolbar>
             <h1 style={{margin:`10px 0px`,}}>Materias de {materias[anio - 1]} año</h1>
-            {<SubjectsTable subjects={subjects} setSubjects={setSubjects} />} {/* Mostrar la tabla solo si hay materias seleccionadas */}
+            {<SubjectsTable subjects={subjectsByYear} setSubjects={setSubjects} />} {/* Mostrar la tabla solo si hay materias seleccionadas */}
         </section>
     )
 }

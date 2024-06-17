@@ -1,40 +1,43 @@
-
-.options{
+.options {
     background-color: #763b3e;
     width: 100%;
     padding-left: 5px;
     padding-right: 10px;
     border-radius: 10px;
     margin-top: 5px;
-    :hover{
+
+    :hover {
         background-color: #af6464;
         cursor: pointer;
     }
 }
-.option{
+
+.option {
     width: 100%;
     border-radius: 10px;
     padding: 2px;
     margin-bottom: 2px;
-    :hover{
+
+    :hover {
         cursor: pointer;
     }
 }
 
-.classrooms-options{
+.classrooms-options {
     background-color: #763b3e;
     width: 100%;
     padding-left: 5px;
     padding-right: 10px;
     border-radius: 10px;
     margin-top: 5px;
-    :hover{
+
+    :hover {
         background-color: #af6464;
         cursor: pointer;
     }
 }
 
-.selected-option{
+.selected-option {
     background-color: #d5cccc;
     color: #763b3e;
     font-weight: bold;
@@ -45,18 +48,19 @@
     padding-right: 10px;
     border-radius: 10px;
     width: 100%;
-    :hover{
+
+    :hover {
         cursor: pointer;
     }
 }
 
-.arrow{
+.arrow {
     position: relative;
     font-size: 20px;
     margin-left: 5px;
 }
 
-.buscar{
+.buscar {
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 3px;
@@ -64,6 +68,76 @@
     border-radius: 10px;
 }
 
-.buscar:hover{
+.buscar:hover {
     background-color: orange;
+}
+
+.custom-select {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    margin-top: 40px;
+    z-index: 1;
+}
+
+.custom-select>div:nth-child(2) {
+    position: absolute;
+    top: 40px;
+    animation: show-in 300ms;
+    animation-fill-mode: both;
+
+}
+
+.wrap-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+.classroom-list-wrapper{
+    min-height: 200px;
+    max-height: 300px;
+    width: 100%;
+    animation: show-in 300ms;
+    animation-fill-mode: both;
+    margin: 10px 0;
+    
+    background-color: white;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.classroom-list-wrapper > div {
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    gap: 5px;
+    min-height: 30px;
+    padding: 10px;
+    box-sizing: border-box;
+    align-items: center;
+}
+.classroom-list-wrapper > div:hover{
+    transition: 300ms;
+    background-color: #b9b9b9;
+}
+.classroom-list-wrapper > div > span {
+    color: black;
+    display: block;
+}
+
+@keyframes show-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
