@@ -15,6 +15,7 @@ export const useSubjects = () => {
         fetchSubjects,
         filterSubjects,
         assignSubjectToClassRoom,
+        unassignSubjectToClassRoom,
         getSubjectsByName,
         getSubjectsByYearFromContext } = useContext(SubjectContext);
     const { subjects } = subjectState;
@@ -29,7 +30,8 @@ export const useSubjects = () => {
         setSubjectsToContext,
         addSubjectToContext,
         filterSubjects,
-        getSubjectsByYearFromContext
+        getSubjectsByYearFromContext,
+        unassignSubjectToClassRoom
 
     }
 }
