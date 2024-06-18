@@ -55,11 +55,7 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
             <Td>{subject.aulaAsignada === 0 ? 'Sin asignar' : subject.aulaAsignada}</Td>
-<<<<<<< HEAD:src/componentes/home/SubjectsTable.js
-            <Td>{subject.tipoDeAula === "Sin asignar" || subject.tipoDeAula === null ? 'Sin asignar' : subject.tipoDeAula}</Td>
-=======
             <Td>{subject.tipoDeAula === null || subject.tipoDeAula ===  "Sin asignar" ? 'Sin asignar' : subject.tipoDeAula}</Td>
->>>>>>> rama_dev:src/componentes/views/subjects/SubjectsTable.js
             <Td>{subject.edificio}</Td>
 {/*             <Td><AssignOrUnassign
               aulaAsignada={subject.aulaAsignada}
