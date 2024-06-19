@@ -31,10 +31,10 @@ export const SubjectProvider = ({ children }) => {
     const getSubjectsByYearFromContext = (anio) => {
         return subjectState.subjects.filter((s) => s.anioPertenece === anio)
     }
-    const getSubjectsByName = async (name) => {
+    const getSubjectsByName = async (name,turno) => {
         setLoadingScreen(true);
         try {
-            let response = await SubjectService.getSubjectByName(name);
+            let response = await SubjectService.getSubjectByName(name,turno);
             setLoadingScreen(false);
             return response.data;
         } catch (error) {

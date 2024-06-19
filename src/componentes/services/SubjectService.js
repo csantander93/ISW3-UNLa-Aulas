@@ -8,8 +8,8 @@ export default class SubjectService {
     static getSubjects() {
         return api.get(`${this.subjectsController}/`);
     }
-    static getSubjectByName(name) {
-        return api.get(`${this.subjectsController}/name/${name}`);
+    static getSubjectByName(name,turno) {
+        return api.get(`${this.subjectsController}/name/${name}?turno=${turno}`);
     }
     static getSubjectsByYear(year) {
         return api.get(`${this.subjectsController}/traerMateriasPorAnio/${year}`);

@@ -62,7 +62,7 @@ const SubjectsTable = ({ subjects, setSubjects }) => {
       <tbody>
         {subjects.map((subject, index) => (
           <tr key={index}>
-            <Td_Name onClick={() => navigate(`${subject.nombre}`)}>{subject.nombre} </Td_Name>
+            <Td_Name onClick={() => navigate(`${subject.nombre}/${subject.turno}`)}>{subject.nombre} </Td_Name>
             <Td>{subject.turno}</Td>
             <Td>{subject.cantEstudiantes}</Td>
             <Td>{subject.docenteACargo}</Td>
