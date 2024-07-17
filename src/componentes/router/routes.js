@@ -26,7 +26,7 @@ export const routes = [
         name: 'SubjectsView'
     },
     {
-        path: '/home/subjects/:anio/:name',
+        path: '/home/subjects/:anio/:name/:turno',
         Component: SubjectDetailView,
         name: 'SubjectDetailView'
     }

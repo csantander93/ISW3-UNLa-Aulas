@@ -5,17 +5,17 @@ import { useSubjects } from "../../../contexts/SubjectContext/useSubjects";
 import { NavLink } from "react-router-dom";
 
 function SubjectDetailView() {
-    const { anio, name } = useParams();
+    const { anio, name,turno } = useParams();
     const { getSubjectsByName } = useSubjects();
     const [subjectDetail, setSubjectDetail] = useState(undefined);
     const navigate = useNavigate();
     useEffect(() => {
-        if (name) {
-            initView(name)
+        if (name,turno) {
+            initView(name,turno)
         }
     }, [name])
-    const initView = async (name) => {
-        let subject = await getSubjectsByName(name);
+    const initView = async (name,turno) => {
+        let subject = await getSubjectsByName(name,turno);
         if (subject) setSubjectDetail(subject)
         else navigate(`/home/subjects/${anio}`)
     }
